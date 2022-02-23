@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\Api\UsuariosApiController;
+use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\TemperatureApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -21,6 +21,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::resource( 'users', UsuariosApiController::class);
+Route::resource(
+    'users',
+    UserApiController::class,
+    ['only' => ['index', 'store', 'show', 'update', 'destroy']]
+);
 
-Route::resource( 'tempetures', TemperatureApiController::class);
+Route::resource(
+    'temperatures',
+    TemperatureApiController::class,
+    ['only' => ['index', 'store', 'show']]
+);
