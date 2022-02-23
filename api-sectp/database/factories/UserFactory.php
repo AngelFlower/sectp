@@ -23,6 +23,8 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' => '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', // password
             'remember_token' => Str::random(10),
+            'min_temperature' => $this->faker->numberBetween(20, 25),
+            'max_temperature' => $this->faker->numberBetween(26, 35)
         ];
     }
 

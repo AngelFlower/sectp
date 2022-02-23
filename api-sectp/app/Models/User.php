@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Traits\ApiResponser;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -21,6 +22,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'min_temperature',
+        'max_temperature'
     ];
 
     /**

@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\ApiController;
-use App\Models\User;
+use App\Models\Temperature;
 use Illuminate\Http\Request;
 
-class UsuariosApiController extends ApiController
+class TemperatureApiController extends ApiController
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +15,8 @@ class UsuariosApiController extends ApiController
      */
     public function index()
     {
-        $usuarios = User::all();
-        return $this->showAll($usuarios);
+        $temperatures = Temperature::all();
+        return $this->showAll($temperatures);
     }
 
     /**

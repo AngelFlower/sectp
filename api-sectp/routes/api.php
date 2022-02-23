@@ -1,7 +1,10 @@
 <?php
 
+use App\Http\Controllers\Api\UsuariosApiController;
+use App\Http\Controllers\Api\TemperatureApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use phpDocumentor\Reflection\Types\Resource_;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource( 'users', UsuariosApiController::class);
+
+Route::resource( 'tempetures', TemperatureApiController::class);

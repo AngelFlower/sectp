@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers;
 
-use App\Http\Controllers\ApiController;
-use App\Models\User;
+use App\Models\Temperature;
 use Illuminate\Http\Request;
 
-class UsuariosApiController extends ApiController
+class TemperatureController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,8 +14,7 @@ class UsuariosApiController extends ApiController
      */
     public function index()
     {
-        $usuarios = User::all();
-        return $this->showAll($usuarios);
+        //
     }
 
     /**
@@ -43,10 +41,10 @@ class UsuariosApiController extends ApiController
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Temperature $temperature)
     {
         //
     }
@@ -54,10 +52,10 @@ class UsuariosApiController extends ApiController
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Temperature $temperature)
     {
         //
     }
@@ -66,10 +64,10 @@ class UsuariosApiController extends ApiController
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Temperature $temperature)
     {
         //
     }
@@ -77,10 +75,10 @@ class UsuariosApiController extends ApiController
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Temperature $temperature)
     {
         //
     }
