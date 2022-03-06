@@ -20,10 +20,10 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'image',
         'email',
         'password',
-        'min_temperature',
-        'max_temperature'
+        'user_type_id'
     ];
 
     /**
@@ -44,4 +44,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+     /**
+     * Get the fish tanks for this user.
+     */
+    public function fishTanks()
+    {
+        return $this->hasMany(FishTank::class);
+    }
+
+    /**
+     * Get the user type for this user.
+     */
+    public function userType()
+    {
+        return $this->belongsTo(UserType::class);
+    }
 }

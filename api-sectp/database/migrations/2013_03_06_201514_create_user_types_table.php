@@ -13,12 +13,10 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('temperatures', function (Blueprint $table) {
+        Schema::create('user_types', function (Blueprint $table) {
             $table->id();
-            $table->integer('temperature');
-            $table->unsignedBigInteger('fish_tank_id');
-            $table->foreign('fish_tank_id')->references('id')->on('fish_tanks');
-            $table->dateTime('date_time');
+            $table->string('name', 45);
+            $table->timestamps();
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('temperatures');
+        Schema::dropIfExists('user_types');
     }
 };

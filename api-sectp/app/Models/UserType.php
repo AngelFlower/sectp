@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Temperature extends Model
+class UserType extends Model
 {
     use HasFactory;
 
@@ -14,17 +14,16 @@ class Temperature extends Model
      *
      * @var array<int, string>
      */
+
     protected $fillable = [
-        'temperature',
-        'fish_tank_id',
-        'date_time'
-    ];  
-    
+        'name'
+    ];
+
     /**
-     * Get the fish tank for this temperature.
+     * Get the users for this user type.
      */
-    public function fishTank()
+    public function users()
     {
-        return $this->belongsTo(FishTank::class);
+        return $this->hasMany(User::class);
     }
 }
