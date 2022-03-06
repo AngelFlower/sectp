@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('temperatures', function (Blueprint $table) {
             $table->id();
-            $table->integer('temperature');
+            $table->decimal('temperature', 8, 2);
             $table->unsignedBigInteger('fish_tank_id');
             $table->foreign('fish_tank_id')->references('id')->on('fish_tanks');
             $table->dateTime('date_time');

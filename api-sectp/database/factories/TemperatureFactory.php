@@ -17,8 +17,9 @@ class TemperatureFactory extends Factory
     public function definition()
     {
         return [
-            'user_id' => $this->faker->numberBetween(1, 10),
-            'temperature' => $this->faker->numberBetween(20, 35),
+            'temperature' => $this->faker->randomFloat(1, 15, 35),
+            'fish_tank_id' => $this->faker->numberBetween(1, 10),
+            'date_time' => $this->faker->dateTimeBetween('-1 years', 'now'),
         ];
     }
 }
