@@ -27,4 +27,16 @@ trait ApiResponser
     {
         return $this->successResponse(['data' => $instance], $code);
     }
+
+    protected function sendResponse($result, $message)
+    {
+    	$response = [
+            'success' => true,
+            'data'    => $result,
+            'message' => $message,
+        ];
+
+
+        return response()->json($response, 200);
+    }
 }

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\RegisterController;
+use App\Http\Controllers\Api\FishTankApiController;
 use App\Http\Controllers\Api\UserApiController;
 use App\Http\Controllers\Api\TemperatureApiController;
 use Illuminate\Http\Request;
@@ -28,7 +31,18 @@ Route::resource(
 );
 
 Route::resource(
+    'fishtanks',
+    FishTankApiController::class,
+    ['only' => ['index', 'store', 'show', 'update', 'destroy']]
+);
+
+Route::resource(
     'temperatures',
     TemperatureApiController::class,
     ['only' => ['index', 'store', 'show']]
 );
+
+
+
+Route::post('/register', RegisterController::class . '@register');
+Route::post('/login', LoginController::class . '@login');
