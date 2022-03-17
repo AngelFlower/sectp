@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\ApiController;
-use App\Models\User;
+use App\Models\FishTank;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\FishTankResource;
 use Illuminate\Http\Request;
 
-class UserApiController extends ApiController
+class FishTankController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +16,9 @@ class UserApiController extends ApiController
      */
     public function index()
     {
-        $users = User::all();
-        return $this->showAll($users);
+        return FishTankResource::collection(FishTank::latest()->paginate());
     }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -26,8 +27,7 @@ class UserApiController extends ApiController
      */
     public function store(Request $request)
     {
-        $user = User::create($request->all());
-        return $this->showOne($user, 201);
+        //
     }
 
     /**
@@ -38,8 +38,7 @@ class UserApiController extends ApiController
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
-        return $this->showOne($user);
+        //
     }
 
     /**

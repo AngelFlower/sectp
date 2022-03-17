@@ -34,7 +34,7 @@ class FishTank extends Model
     /**
      * Get the temperatures for this fish tank.
      */
-    function temperatures()
+    function temperature()
     {
         return $this->hasMany(Temperature::class);
     }

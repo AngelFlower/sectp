@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Http\Controllers\Api;
+namespace App\Http\Controllers\Api\V1;
 
-use App\Http\Controllers\ApiController;
+use App\Models\Temperature;
+use App\Http\Controllers\Controller;
+use App\Http\Resources\V1\TemperatureResource;
 use Illuminate\Http\Request;
 
-use App\Models\FishTank;
-
-class FishTankApiController extends ApiController
+class TemperatureController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,8 +16,7 @@ class FishTankApiController extends ApiController
      */
     public function index()
     {
-        $fishTanks = FishTank::all();
-        return $this->showAll($fishTanks);
+        return TemperatureResource::collection(Temperature::latest()->paginate());
     }
 
     /**
@@ -28,8 +27,7 @@ class FishTankApiController extends ApiController
      */
     public function store(Request $request)
     {
-        $fishTank = FishTank::create($request->all());
-        return $this->showOne($fishTank, 201);
+        //
     }
 
     /**
@@ -40,8 +38,7 @@ class FishTankApiController extends ApiController
      */
     public function show($id)
     {
-        $fishTank = FishTank::findOrFail($id);
-        return $this->showOne($fishTank);
+        //
     }
 
     /**

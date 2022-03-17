@@ -9,9 +9,6 @@ class Temperature extends Model
 {
     use HasFactory;
 
-    // timestamp columns
-    public $timestamps = false;
-
     /**
      * The attributes that are mass assignable.
      *
