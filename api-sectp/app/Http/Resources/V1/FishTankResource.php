@@ -14,11 +14,19 @@ class FishTankResource extends JsonResource
      */
     public function toArray($request)
     {
+        //$last_temperature = $this->temperature->last()->temperature;
+        //$status = $last_temperature < $this->max_temperature && $last_temperature > $this->min_temperature ? 'ok' : 'danger';
+
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            //'image' => $this->image,
+            'min_temperature' => $this->min_temperature,
+            'max_temperature' => $this->max_temperature,
+            'capacity' => $this->capacity,
+            //'lasted_temperature' => $last_temperature,
+            //'status' => $status,
+            'user_id' => $this->user_id,
         ];
     }
 }

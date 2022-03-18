@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\Api\V1;
 
-use App\Models\Temperature;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\TemperatureResource;
+use App\Models\Temperature;
 use Illuminate\Http\Request;
 
 class TemperatureController extends Controller
@@ -27,40 +27,56 @@ class TemperatureController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // store temperature
+        $temperature = Temperature::create($request->all());
+
+        // return response
+        return response()->json([
+            'message' => 'Temperature created successfully',
+            'temperature' => new TemperatureResource($temperature),
+        ], 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(Temperature $temperature)
     {
-        //
+        return new TemperatureResource($temperature);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Temperature $temperature)
     {
-        //
+        // update temperature
+        $temperature->update($request->all());
+
+        // return response
+        return response()->json([
+            'message' => 'Temperature updated successfully',
+            'temperature' => new TemperatureResource($temperature),
+        ], 200);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  \App\Models\Temperature  $temperature
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Temperature $temperature)
     {
-        //
+        $temperature->delete();
+
+        return response()->json(['message' => 'Success'], 204);
     }
 }
