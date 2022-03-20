@@ -30,6 +30,15 @@ class FishTankController extends Controller
         // store fishtank
         $fishtank = FishTank::create($request->all());
 
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $name = time() . '.' . $image->getClientOriginalExtension();
+            $destinationPath = public_path('/fishtank_images');
+            $image->move($destinationPath, $name);
+            $fishtank->image = $name;
+            $fishtank->save();
+        }
+
         // return response
         return response()->json([
             'message' => 'Fishtank created successfully',
@@ -79,4 +88,22 @@ class FishTankController extends Controller
 
         return response()->json(['message' => 'Success'], 204);
     }
+
+    public function getByUser()
+    {
+        return FishTankResource::collection(auth()->user()->fishtanks);
+    }
+
+    protected function validateStore(Request $request)
+    {
+        return $this->validate($request, [
+            'name' => 'required|string|max:255',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'min_temperature' => 'required|double',
+            'max_temperature' => 'required|double',
+            'capacity' => 'required|double',
+            'user_id' => 'required|integer',
+        ]);
+    }
+
 }

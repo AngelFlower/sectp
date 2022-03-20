@@ -45,6 +45,7 @@ class TemperatureController extends Controller
      */
     public function show(Temperature $temperature)
     {
+
         return new TemperatureResource($temperature);
     }
 
@@ -78,5 +79,10 @@ class TemperatureController extends Controller
         $temperature->delete();
 
         return response()->json(['message' => 'Success'], 204);
+    }
+
+    public function getByFishTank($fish_tank_id)
+    {
+        return TemperatureResource::collection(Temperature::where('fish_tank_id', $fish_tank_id)->latest()->paginate());
     }
 }
