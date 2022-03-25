@@ -5,6 +5,8 @@ use App\Http\Controllers\Api\RegisterController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\FishTankController as FishTankControllerV1;
 use App\Http\Controllers\Api\V1\TemperatureController as TemperatureControllerV1;
+use App\Http\Controllers\Api\V1\UserController as UserControllerV1;
+use App\Http\Controllers\Api\V1\WateringController as WateringControllerV1;
 
 // V1 api routes
 Route::group(['prefix' => 'v1'], function () {
@@ -22,9 +24,10 @@ Route::group(['prefix' => 'v1'], function () {
         Route::apiResource('temperatures', TemperatureControllerV1::class);
 
         // user routes
-        Route::apiResource('users', UserController::class);
+        Route::get('user', UserControllerV1::class . '@getUser');
+        Route::apiResource('users', UserControllerV1::class);
 
         // user type routes
-        Route::apiResource('user_types', UserTypeController::class);
+        Route::apiResource('user_types', UserTypeControllerV1::class);
     });
 });
