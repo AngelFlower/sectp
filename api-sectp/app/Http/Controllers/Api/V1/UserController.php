@@ -83,4 +83,8 @@ class UserController extends Controller
             'message' => 'User deleted successfully',
         ], 200);
     }
+
+    public function getUser(){
+        return new UserResource(auth()->user());
+    }
 }

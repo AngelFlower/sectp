@@ -17,7 +17,7 @@ class LoginController extends Controller
         if (Auth::attempt($request->only('email', 'password'))) {
             return response()->json(
                 [
-                    'token' => $request->user()->createToken($request->name)->plainTextToken,
+                    'token' => $request->user()->createToken($request->device_id)->plainTextToken,
                     'message' => 'Success'
                 ]
             );
@@ -36,7 +36,18 @@ class LoginController extends Controller
         return $request->validate([
             'email' => 'required|string',
             'password' => 'required|string',
-            'name' => 'required',
+            'device_id' => 'required',
         ]);
+    }
+
+    public function logout(Request $request)
+    {
+         $request->user()->tokens()->where('name', $request->device_id)->delete();
+        
+        return response()->json(
+            [
+                'message' => 'Successfully logged out'
+            ]
+        );
     }
 }
