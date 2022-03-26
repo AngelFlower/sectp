@@ -10,6 +10,7 @@ return new class extends Migration
      *
      * @return void
      */
+
     public function up()
     {
         Schema::create('users', function (Blueprint $table) {
@@ -22,6 +23,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_type_id');
             $table->foreign('user_type_id')->references('id')->on('user_types');
             $table->rememberToken();
+            $table->softDeletes();
             $table->timestamps();
         });
     }
