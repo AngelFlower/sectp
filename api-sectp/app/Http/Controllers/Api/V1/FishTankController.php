@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\V1\FishTankResource;
 use App\Models\FishTank;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class FishTankController extends Controller
 {
@@ -27,9 +29,30 @@ class FishTankController extends Controller
      */
     public function store(Request $request)
     {
-        // store fishtank
-        $fishtank = FishTank::create($request->all());
 
+
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'image' => 'nullable|string',
+            'min_temperature' => 'required|numeric',
+            'max_temperature' => 'required|numeric',
+            'capacity' => 'required|numeric',
+        ]);
+
+        if ($request->image != null && $request->image != '') {
+           
+        $image = $request->image;  // your base64 encoded
+        $image = str_replace('data:image/png;base64,', '', $image);
+        $image = str_replace(' ', '+', $image);
+        $imageName = $request->name .'_'. Str::random(10) . '.png';
+    
+        Storage::disk('public')->put($imageName, base64_decode($image));
+        //set request image as imagename
+        $request->merge(['image' => env('APP_URL').'/storage/'.$imageName]);
+        
+        }
+        
+        /*
         if ($request->hasFile('image')) {
             $image = $request->file('image');
             $name = time() . '.' . $image->getClientOriginalExtension();
@@ -38,7 +61,8 @@ class FishTankController extends Controller
             $fishtank->image = $name;
             $fishtank->save();
         }
-
+        */
+        $fishtank = auth()->user()->fishTanks()->create($request->all());
         // return response
         return response()->json([
             'message' => 'Fishtank created successfully',
@@ -91,19 +115,9 @@ class FishTankController extends Controller
 
     public function getByUser()
     {
-        return FishTankResource::collection(auth()->user()->fishtanks);
-    }
+        $fishtank = auth()->user()->fishTanks()->latest()->paginate();
 
-    protected function validateStore(Request $request)
-    {
-        return $this->validate($request, [
-            'name' => 'required|string|max:255',
-            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'min_temperature' => 'required|double',
-            'max_temperature' => 'required|double',
-            'capacity' => 'required|double',
-            'user_id' => 'required|integer',
-        ]);
+        return FishTankResource::collection($fishtank);
     }
 
 }

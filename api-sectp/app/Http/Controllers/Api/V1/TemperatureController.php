@@ -27,6 +27,11 @@ class TemperatureController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'temperature' => 'required|numeric',
+            'date_time' => 'required|date',
+            'fish_tank_id' => 'required|numeric'
+        ]);
         // store temperature
         $temperature = Temperature::create($request->all());
 
