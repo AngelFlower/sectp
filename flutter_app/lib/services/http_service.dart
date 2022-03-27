@@ -47,11 +47,12 @@ class HttpService {
     required String url,
     required bool auth,
   }) async {
-    final respuesta = await http.get(Uri.parse('$baseURL/$url'),
+    final response = await http.get(Uri.parse('$baseURL/$url'),
         headers: await _getHeaders(auth: auth));
 
-    if (respuesta.statusCode == 200) {
-      return jsonDecode(respuesta.body);
+    log(response.body);
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
     } else {
       throw Exception('Failed to get data');
     }
@@ -61,11 +62,13 @@ class HttpService {
       {required String url,
       required bool auth,
       required Map<String, String> data}) async {
-    final respuesta = await http.delete(Uri.parse('$baseURL/$url'),
+    final response = await http.delete(Uri.parse('$baseURL/$url'),
         headers: await _getHeaders(auth: auth), body: json.encode(data));
 
-    if (respuesta.statusCode == 200) {
-      return jsonDecode(respuesta.body);
+    log(response.body);
+
+    if (response.statusCode == 200) {
+      return jsonDecode(response.body);
     } else {
       throw Exception('Failed to get data');
     }

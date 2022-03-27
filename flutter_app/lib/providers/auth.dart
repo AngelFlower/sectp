@@ -79,8 +79,8 @@ class Auth extends ChangeNotifier {
   void logout() async {
     _isAuth = false;
 
-    await HttpService()
-        .delete(url: 'logout', auth: true, data: {'token': await getToken()});
+    await HttpService().delete(
+        url: 'logout', auth: true, data: {'deviceID': await getDeviceID()});
 
     await deleteToken();
 
