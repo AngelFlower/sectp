@@ -12,8 +12,9 @@ use App\Http\Controllers\Api\V1\WateringController as WateringControllerV1;
 Route::group(['prefix' => 'v1'], function () {
     Route::post('login', [LoginController::class, 'login']);
     Route::post('register', [RegisterController::class, 'register']);
-
+    
     Route::group(['middleware' => 'auth:sanctum'], function () {
+        Route::delete('logout', [LoginController::class, 'logout']);
 
         // fishtank routes
         Route::get('fishtanks/user', FishTankControllerV1::class . '@getByUser');

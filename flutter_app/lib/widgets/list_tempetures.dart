@@ -1,8 +1,8 @@
+/*
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/temperature.dart';
 import 'package:flutter_app/services/http_service.dart';
 
-/*
  Future<List<Temperature>> getPosts() async {
     final response = await http.get(
         Uri.parse('http://127.0.0.1:8000/api/v1/temperatures/'),

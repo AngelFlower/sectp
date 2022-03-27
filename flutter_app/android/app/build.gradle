@@ -57,13 +57,12 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    defaultConfig {
+        minSdkVersion 18
+    }
 }
 
-android {
-  defaultConfig {
-    minSdkVersion 18
-  }
-}
 
 flutter {
     source '../..'

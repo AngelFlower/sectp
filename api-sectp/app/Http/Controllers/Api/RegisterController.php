@@ -33,7 +33,7 @@ class RegisterController extends Controller
 
         return response()->json(
             [
-                'token' => $user->createToken($request->deviceID)->plainTextToken,
+                'token' => $user->createToken($request->device_id)->plainTextToken,
                 'message' => 'Success'
             ]
         );
@@ -46,6 +46,7 @@ class RegisterController extends Controller
             'image' => 'nullable',
             'email' => 'required|email|unique:users',
             'password' => 'required|confirmed',
+            'device_id'
         ]);
     }
 }

@@ -2,13 +2,11 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'dart:convert';
-import 'package:dio/dio.dart' as Dio;
 import 'package:flutter_app/services/http_service.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:platform_device_id/platform_device_id.dart';
 
 import 'package:flutter_app/models/user.dart';
-import 'package:flutter_app/services/dio.dart';
 
 import 'package:http/http.dart' as http;
 
@@ -49,7 +47,7 @@ class Auth extends ChangeNotifier {
       notifyListeners();
     } catch (e) {
       _isAuth = false;
-      log('message: ${e}');
+      log('message: $e');
     }
     log(_isAuth.toString());
   }
@@ -81,13 +79,8 @@ class Auth extends ChangeNotifier {
   void logout() async {
     _isAuth = false;
 
-    await dio().delete('logout',
-        data: {'deviceID': await getDeviceID()},
-        options: Dio.Options(
-          headers: {
-            'auth': true,
-          },
-        ));
+    await HttpService()
+        .delete(url: 'logout', auth: true, data: {'token': await getToken()});
 
     await deleteToken();
 

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/fish_tank.dart';
 import 'package:flutter_app/services/http_service.dart';
+import 'package:themed/themed.dart';
 
 Future<List<FishTank>> getFishTanks() async {
   final response = await HttpService().get(url: 'fishtanks/user', auth: true);
@@ -23,8 +24,12 @@ Widget listFishTanks(BuildContext context) {
                     var item = snapshot.data![index];
                     if (index == 0) {
                       return Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text("Fish Tanks"),
+                          Text(
+                            " Fish Tanks",
+                            style: Theme.of(context).textTheme.headline1,
+                          ),
                           fishTankCard(item, context),
                         ],
                       );
@@ -46,38 +51,45 @@ Widget listFishTanks(BuildContext context) {
 
 Card fishTankCard(FishTank item, BuildContext context) {
   return Card(
-    margin: const EdgeInsets.all(8),
-    child: Padding(
-      padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
-      child: Row(
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(10.0),
+    ),
+    child: ClipRRect(
+      borderRadius: BorderRadius.circular(10.0),
+      child: Stack(
         children: [
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Image.network(
-                  item.image,
-                  // 'https://still-hamlet-67194.herokuapp.com/${item.image}',
-
-                  //height: 100,
-                ),
-                const SizedBox(
-                  height: 6.0,
-                ),
-                Text(
-                  item.name,
-                  style: Theme.of(context).textTheme.headline6,
-                ),
-                Text(
-                  item.capacity,
-                  style: Theme.of(context).textTheme.subtitle1,
-                ),
-              ],
+          ChangeColors(
+            brightness: -0.05,
+            child: Image.network(
+              item.image,
+              height: 200,
+              width: MediaQuery.of(context).size.width,
+              fit: BoxFit.cover,
+              filterQuality: FilterQuality.medium,
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            color: Theme.of(context).primaryColor,
+          SizedBox(
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.only(left: 16, bottom: 16),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(
+                    height: 6.0,
+                  ),
+                  Text(
+                    item.name,
+                    style: Theme.of(context).textTheme.headline3,
+                  ),
+                  Text(
+                    '${item.latestTemperature}°C | ${item.status} | ${item.capacity}L',
+                    style: Theme.of(context).textTheme.subtitle1,
+                  )
+                ],
+              ),
+            ),
           ),
         ],
       ),

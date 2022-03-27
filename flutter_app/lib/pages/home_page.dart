@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/providers/auth.dart';
 import 'package:flutter_app/widgets/list_fish_tanks.dart';
-import 'package:flutter_app/widgets/list_tempetures.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -30,7 +26,9 @@ class _HomePageState extends State<HomePage> {
     }
 
     List<Widget> _pages = <Widget>[
-      listFishTanks(context),
+      SafeArea(
+          minimum: const EdgeInsets.symmetric(horizontal: 6),
+          child: listFishTanks(context)),
       //listTemperatures(context),
       const Icon(
         Icons.chat,

@@ -1,13 +1,7 @@
 import 'dart:convert';
 import 'dart:developer';
-// ignore: library_prefixes
-import 'package:dio/dio.dart' as Dio;
-import 'package:flutter_app/models/fish_tank.dart';
-import 'package:flutter_app/models/temperature.dart';
 import 'package:flutter_app/providers/auth.dart';
 import 'package:http/http.dart' as http;
-
-import 'dio.dart';
 
 class HttpService {
   final baseURL = 'http://10.0.2.2:8000/api/v1';
@@ -55,6 +49,20 @@ class HttpService {
   }) async {
     final respuesta = await http.get(Uri.parse('$baseURL/$url'),
         headers: await _getHeaders(auth: auth));
+
+    if (respuesta.statusCode == 200) {
+      return jsonDecode(respuesta.body);
+    } else {
+      throw Exception('Failed to get data');
+    }
+  }
+
+  Future<dynamic> delete(
+      {required String url,
+      required bool auth,
+      required Map<String, String> data}) async {
+    final respuesta = await http.delete(Uri.parse('$baseURL/$url'),
+        headers: await _getHeaders(auth: auth), body: json.encode(data));
 
     if (respuesta.statusCode == 200) {
       return jsonDecode(respuesta.body);
