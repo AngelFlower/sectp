@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\V1\FishTankController as FishTankControllerV1;
 use App\Http\Controllers\Api\V1\TemperatureController as TemperatureControllerV1;
 use App\Http\Controllers\Api\V1\UserController as UserControllerV1;
-use App\Http\Controllers\Api\V1\WateringController as WateringControllerV1;
+use App\Http\Controllers\Api\V1\UserTypeController as UserTypeControllerV1;
 
 // V1 api routes
 Route::group(['prefix' => 'v1'], function () {

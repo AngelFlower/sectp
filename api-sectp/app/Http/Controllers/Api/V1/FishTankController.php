@@ -88,9 +88,10 @@ class FishTankController extends Controller
      * @param  \App\Models\FishTank  $fishTank
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, FishTank $fishTank)
+    public function update(Request $request, $id)
     {
         // update fishtank
+        $fishTank = FishTank::findOrFail($id);
         $fishTank->update($request->all());
 
         // return response
@@ -106,11 +107,14 @@ class FishTankController extends Controller
      * @param  \App\Models\FishTank  $fishTank
      * @return \Illuminate\Http\Response
      */
-    public function destroy(FishTank $fishTank)
+    public function destroy($id)
     {
-        $fishTank->delete();
-
-        return response()->json(['message' => 'Success'], 204);
+        $fishtank = FishTank::findOrFail($id);
+        $fishtank->delete();
+        return response()->json([
+            'message' => 'Fishtank deleted successfully',
+        ], 200);
+    
     }
 
     public function getByUser()
