@@ -1,15 +1,23 @@
-import 'dart:developer';
 import 'dart:io';
+import 'dart:convert';
 
 import 'package:cool_alert/cool_alert.dart';
 import 'package:cool_stepper/cool_stepper.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/fish_tank.dart';
+import 'package:flutter_app/services/http_service.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:path_provider/path_provider.dart';
 
 class FishTankCreate extends StatefulWidget {
-  const FishTankCreate({Key? key, this.title}) : super(key: key);
+  const FishTankCreate(
+      {Key? key, required this.title, required this.edit, this.fishTank})
+      : super(key: key);
 
-  final String? title;
+  final String title;
+  final bool edit;
+  final FishTank? fishTank;
 
   @override
   _FishTankCreateState createState() => _FishTankCreateState();
@@ -23,6 +31,36 @@ class _FishTankCreateState extends State<FishTankCreate> {
   final TextEditingController _capacityCtrl = TextEditingController();
   final TextEditingController _minTemperatureCtrl = TextEditingController();
   final TextEditingController _maxTemperatureCtrl = TextEditingController();
+  static var httpClient = new HttpClient();
+
+  Future<File> _downloadFile(String url, String filename) async {
+    var httpClient = new HttpClient();
+    try {
+      var request = await httpClient.getUrl(Uri.parse(url));
+      var response = await request.close();
+      var bytes = await consolidateHttpClientResponseBytes(response);
+      final dir =
+          await getTemporaryDirectory(); //(await getApplicationDocumentsDirectory()).path;
+      File file = new File('${dir.path}/$filename');
+      await file.writeAsBytes(bytes);
+      print('downloaded file path = ${file.path}');
+      return file;
+    } catch (error) {
+      print('pdf downloading error = $error');
+      return File('');
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    if (widget.edit) {
+      _nameCtrl.text = widget.fishTank!.name;
+      _capacityCtrl.text = widget.fishTank!.capacity.toString();
+      _minTemperatureCtrl.text = widget.fishTank!.minTemperature.toString();
+      _maxTemperatureCtrl.text = widget.fishTank!.maxTemperature.toString();
+    }
+  }
 
   File? _image;
 
@@ -96,6 +134,36 @@ class _FishTankCreateState extends State<FishTankCreate> {
         });
   }
 
+  Widget _childImage() {
+    if (widget.edit && _image == null) {
+      return Image.network(widget.fishTank!.image);
+    } else if (_image == null) {
+      return SizedBox(
+        height: 100,
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Icon(Icons.image, color: Colors.grey.shade800, size: 30),
+              Text(
+                'Select an image',
+                style: TextStyle(
+                  color: Colors.grey.shade800,
+                  fontSize: 20,
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    }
+
+    return Image.file(
+      _image!,
+      fit: BoxFit.cover,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final steps = [
@@ -112,38 +180,14 @@ class _FishTankCreateState extends State<FishTankCreate> {
                     _showChoiceDialog(context);
                   },
                   child: Ink(
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: Colors.grey.shade600,
-                        width: 1,
+                      decoration: BoxDecoration(
+                        border: Border.all(
+                          color: Colors.grey.shade600,
+                          width: 1,
+                        ),
+                        borderRadius: BorderRadius.circular(8),
                       ),
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                    child: _image == null
-                        ? SizedBox(
-                            height: 100,
-                            child: Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Icon(Icons.image,
-                                      color: Colors.grey.shade800, size: 30),
-                                  Text(
-                                    'Select an image',
-                                    style: TextStyle(
-                                      color: Colors.grey.shade800,
-                                      fontSize: 20,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        : Image.file(
-                            _image!,
-                            fit: BoxFit.cover,
-                          ),
-                  ),
+                      child: _childImage()),
                 ),
               ),
               _buildTextField(
@@ -225,7 +269,20 @@ class _FishTankCreateState extends State<FishTankCreate> {
     final stepper = CoolStepper(
       showErrorSnackbar: false,
       onCompleted: () async {
-        log('Steps completed!');
+        Map<String, dynamic> data = {
+          'name': _nameCtrl.text.toString(),
+          'capacity': double.parse(_capacityCtrl.text.toString()),
+          'min_temperature': double.parse(_minTemperatureCtrl.text.toString()),
+          'max_temperature': double.parse(_maxTemperatureCtrl.text.toString())
+          //'image': _image,
+        };
+        if (_image != null) {
+          List<int> imageBytes = _image!.readAsBytesSync();
+          String base64Image = base64Encode(imageBytes);
+          data.addAll({'image': base64Image});
+        }
+        HttpService().post(url: 'fishtanks', auth: true, data: data);
+
         await CoolAlert.show(
           title: 'Success!',
           context: context,
@@ -242,7 +299,7 @@ class _FishTankCreateState extends State<FishTankCreate> {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Create Fish Tank'),
+        title: Text(widget.title),
       ),
       body: Container(
         child: stepper,
@@ -267,43 +324,4 @@ class _FishTankCreateState extends State<FishTankCreate> {
       ),
     );
   }
-
-/*
-  Widget _buildSelector({
-    BuildContext? context,
-    required String name,
-  }) {
-    final isActive = name == selectedRole;
-
-    return Expanded(
-      child: AnimatedContainer(
-        duration: Duration(milliseconds: 200),
-        curve: Curves.easeInOut,
-        decoration: BoxDecoration(
-          color: isActive ? Theme.of(context!).primaryColor : null,
-          border: Border.all(
-            width: 0,
-          ),
-          borderRadius: BorderRadius.circular(8.0),
-        ),
-        child: RadioListTile(
-          value: name,
-          activeColor: Colors.white,
-          groupValue: selectedRole,
-          onChanged: (String? v) {
-            setState(() {
-              selectedRole = v;
-            });
-          },
-          title: Text(
-            name,
-            style: TextStyle(
-              color: isActive ? Colors.white : null,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-  */
 }

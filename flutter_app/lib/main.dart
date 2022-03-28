@@ -5,7 +5,6 @@ import 'providers/auth.dart';
 import 'package:provider/provider.dart';
 import 'pages/login_page.dart';
 import 'pages/home_page.dart';
-import 'pages/fishTank/create.dart';
 
 void main() =>
     runApp(ChangeNotifierProvider(create: (_) => Auth(), child: const MyApp()));
@@ -25,7 +24,6 @@ class _MyAppState extends State<MyApp> {
       final auth = Provider.of<Auth>(context, listen: false);
       await auth.attempt(key);
     }
-    //Provider.of<Auth>(context, listen: false).attempt(key!);
   }
 
   @override
@@ -91,7 +89,7 @@ class _MyAppState extends State<MyApp> {
               ),
           'login': (context) => const LoginPage(),
           'home': (context) => const HomePage(),
-          'fish_tank_create': (context) => const FishTankCreate(),
+          //'fish_tank_create': (context) => const FishTankCreate(),
           //'user_show': (context) => const UserShowPage(),
           //'user_edit': (context) => const UserEditPage(),
         });

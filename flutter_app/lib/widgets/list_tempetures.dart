@@ -1,42 +1,40 @@
-/*
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/temperature.dart';
 import 'package:flutter_app/services/http_service.dart';
 
- Future<List<Temperature>> getPosts() async {
-    final response = await http.get(
-        Uri.parse('http://127.0.0.1:8000/api/v1/temperatures/'),
-        headers: requestHeaders);
+Future<List<Temperature>> getTemperatures(id) async {
+  final response =
+      await HttpService().get(url: 'temperatures/fishtank/$id', auth: true);
 
-    List temperatures = json.decode(response.body)['data'];
-    return temperatures
-        .map((tempeture) => Temperature.fromJson(tempeture))
-        .toList();
-  }
+  List temperatures = response['data'];
+  return temperatures
+      .map((tempeture) => Temperature.fromJson(tempeture))
+      .toList();
+}
 
-Widget listTemperatures(BuildContext context) {
+Widget listTemperatures(BuildContext context, id) {
   return FutureBuilder<List<Temperature>>(
-    future: HttpService().getPosts(),
+    future: getTemperatures(id),
     builder: (context, snapshot) {
       if (snapshot.hasData) {
-        //print(snapshot.data);
-        return ListView.builder(
-            itemCount: snapshot.data?.length,
-            itemBuilder: (context, index) {
-              var item = snapshot.data![index];
-
-              return ListTile(
-                title: Text(item.temperature.toString()),
+        return Column(
+            children: snapshot.data!.map((item) {
+          return Column(
+            children: [
+              ListTile(
+                title: Text('${item.temperature}°C'),
                 subtitle: Text(item.dateTime.toString()),
-              );
-            });
+              ),
+              const Divider(
+                height: 1,
+              ),
+            ],
+          );
+        }).toList());
       } else if (snapshot.hasError) {
         return Text('${snapshot.error}');
       }
-
-      // By default, show a loading spinner.
       return const CircularProgressIndicator();
     },
   );
 }
-*/

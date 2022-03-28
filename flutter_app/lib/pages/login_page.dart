@@ -16,10 +16,10 @@ class _LoginPageState extends State<LoginPage> {
   String _password = '';
 
   Future submit() async {
-    Provider.of<Auth>(context, listen: false)
+    await Provider.of<Auth>(context, listen: false)
         .login(credentials: {'email': _email, 'password': _password});
 
-    Navigator.pushNamed(context, '/');
+    Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
   }
 
   @override

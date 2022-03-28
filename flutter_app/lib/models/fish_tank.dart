@@ -22,6 +22,9 @@ class FishTank {
   });
 
   factory FishTank.fromJson(Map<String, dynamic> json) {
+    if (json['image'] == null || json['image'] == '') {
+      json['image'] = 'https://i.imgur.com/m6z37oM.png';
+    }
     return FishTank(
         id: json['id'].toString(),
         name: json['name'].toString(),

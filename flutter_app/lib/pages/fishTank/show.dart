@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/fish_tank.dart';
+import 'package:flutter_app/pages/fishTank/create.dart';
+import 'package:flutter_app/services/http_service.dart';
+import 'package:flutter_app/utils/animations.dart';
 import 'package:flutter_app/widgets/list_tempetures.dart';
 
 class FishTankShow extends StatelessWidget {
@@ -16,6 +19,47 @@ class FishTankShow extends StatelessWidget {
     return Scaffold(
         appBar: AppBar(
           title: Text(fishTank.name),
+          actions: [
+            IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () => Navigator.push(
+                  context,
+                  Animations().createRoute(
+                      page: FishTankCreate(
+                          title: 'Edit fishtank',
+                          edit: true,
+                          fishTank: fishTank))),
+            ),
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: () => showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: const Text('Are you sure?'),
+                      content: const Text(
+                          'This action cannot be undone. Are you sure you want to delete this fish tank?'),
+                      actions: [
+                        TextButton(
+                          child: const Text('Cancel'),
+                          onPressed: () => Navigator.pop(context),
+                        ),
+                        TextButton(
+                          child: const Text('Delete'),
+                          onPressed: () async {
+                            await HttpService().delete(
+                                url: 'fishtanks/${fishTank.id}',
+                                auth: true,
+                                data: {});
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                          },
+                        ),
+                      ],
+                    );
+                  }),
+            ),
+          ],
         ),
         body: SingleChildScrollView(
             child: Column(
