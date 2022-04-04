@@ -21,7 +21,7 @@ class FishTankShow extends StatelessWidget {
           title: Text(fishTank.name),
           actions: [
             IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () => Navigator.push(
                   context,
                   Animations().createRoute(
@@ -31,7 +31,7 @@ class FishTankShow extends StatelessWidget {
                           fishTank: fishTank))),
             ),
             IconButton(
-              icon: Icon(Icons.delete),
+              icon: const Icon(Icons.delete),
               onPressed: () => showDialog(
                   context: context,
                   builder: (BuildContext context) {

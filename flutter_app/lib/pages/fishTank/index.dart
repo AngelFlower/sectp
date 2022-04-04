@@ -56,8 +56,8 @@ class FishTankIndex extends StatelessWidget {
               ),
             ),
             */
-            SafeArea(
-                minimum: const EdgeInsets.only(left: 8, right: 8),
+            const SafeArea(
+                minimum: EdgeInsets.only(left: 8, right: 8),
                 child: ListFishTanks())
         //],
         //),

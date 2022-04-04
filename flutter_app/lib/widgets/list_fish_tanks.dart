@@ -6,7 +6,7 @@ import 'package:flutter_app/utils/animations.dart';
 import 'package:themed/themed.dart';
 
 class ListFishTanks extends StatefulWidget {
-  ListFishTanks({Key? key}) : super(key: key);
+  const ListFishTanks({Key? key}) : super(key: key);
 
   @override
   State<ListFishTanks> createState() => _ListFishTanksState();
@@ -41,8 +41,8 @@ class _ListFishTanksState extends State<ListFishTanks> {
       builder: (context, snapshot) {
         return RefreshIndicator(
             child: SingleChildScrollView(
-                physics: AlwaysScrollableScrollPhysics(),
-                child: Expanded(child: _listFishTanks(snapshot))),
+                physics: const AlwaysScrollableScrollPhysics(),
+                child: _listFishTanks(snapshot)),
             onRefresh: _pullRefresh);
       },
     );
